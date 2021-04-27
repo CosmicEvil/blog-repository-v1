@@ -1,4 +1,12 @@
 import React, { Component } from 'react';
+import gong from "../sound-effects/gong.mp3"
+
+import Container from '@material-ui/core/Container';
+import Button from '@material-ui/core/Button';
+import Box from '@material-ui/core/Box';
+import ProTip from '../components/ProTip';
+import { Link } from 'gatsby-theme-material-ui';
+import Copyright from '../components/Copyright';
 
 
 class Timer extends Component {
@@ -13,33 +21,38 @@ class Timer extends Component {
         this.handleChange = this.handleChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
         this.addTime= this.addTime.bind(this)
-        this.audio = new Audio("../assets/gong.mp3");
+       
     }
-
+    playAudio() {
+        const audioEl = document.getElementsByClassName("audio-element")[0]
+        audioEl.play()
+    }
     render() {
         const { minutes, seconds } = this.state
         return (
             <div className="timer light-green lighten-4">
-                <span id="audio"></span>
+                <audio className="audio-element">
+                    <source src={gong}></source>
+                </audio>
 
                 { minutes === 0 && seconds === 0
-                    ? <div className="time light-green-text text-darken-4"><h1>Time Remaining:</h1><h2>Done!</h2></div>
-                    : <div className="time light-green-text text-darken-4"><h1>Time Remaining:</h1><h2> {minutes}:{seconds < 10 ? `0${seconds}` : seconds}</h2></div>
+                    ? <div className="time light-green-text text-darken-4"><h2>Time Remaining:</h2><h1>Done!</h1></div>
+                    : <div className="time light-green-text text-darken-4"><h2>Time Remaining:</h2><h1> {minutes}:{seconds < 10 ? `0${seconds}` : seconds}</h1></div>
                 }
                 <form className="form" onSubmit={this.handleSubmit}>
                     { this.state.checked
-                        ? <button className="waves-effect waves-light btn-large">stop</button>
-                        : <button className="waves-effect waves-light btn-large">start</button>
+                        ? <Button variant="contained" onClick={() => this.handleSubmit()} >stop</Button>
+                        : <Button variant="contained" onClick={() => this.handleSubmit()}>start</Button>
                     }
                 </form>
                <div className="more"> 
-                    <button className="waves-effect waves-red red lighten-2 btn" onClick={() => this.addTime(5,false, true)} >- 5m</button>
-                    <button className="waves-effect waves-red red lighten-2 btn" onClick={() => this.addTime(1,false, true)}>- 1m</button>
-                    <button className="waves-effect waves-red red lighten-2 btn" onClick={() => this.addTime(0.5,false,false)} >- 30s</button>
+                    <Button variant="contained" color="primary" onClick={() => this.addTime(5,false, true)} >- 5m</Button>
+                    <Button variant="contained" color="primary" onClick={() => this.addTime(1,false, true)}>- 1m</Button>
+                    <Button variant="contained" color="primary" onClick={() => this.addTime(0.5,false,false)} >- 30s</Button>
                     <div className="break"></div>
-                    <button className="waves-effect waves-green light-green btn" onClick={() => this.addTime(0.5,true, false)} >+ 30s</button>
-                    <button className="waves-effect waves-green light-green btn" onClick={() => this.addTime(1,true, true)} >+ 1m</button>
-                    <button className="waves-effect waves-green light-green btn" onClick={() => this.addTime(5,true, true)} >+ 5m</button>
+                    <Button variant="contained" color="secondary" onClick={() => this.addTime(0.5,true, false)} >+ 30s</Button>
+                    <Button variant="contained" color="secondary" onClick={() => this.addTime(1,true, true)} >+ 1m</Button>
+                    <Button variant="contained" color="secondary" onClick={() => this.addTime(5,true, true)} >+ 5m</Button>
                
                 </div>
             </div>
@@ -106,11 +119,10 @@ class Timer extends Component {
         }
     }
     handleSubmit(event) {
-       // const audio = new Audio("../assets/gong.mp3")
-  
-        event.preventDefault();
+        this.playAudio()
+       // event.preventDefault();
         if(!this.state.checked){
-           this.audio.play() 
+         //  audio.play() 
             this.myInterval = setInterval(() => {
             const { seconds, minutes } = this.state
             if (seconds > 0) {
@@ -120,7 +132,7 @@ class Timer extends Component {
             }
             if (seconds === 0) {
               if (minutes === 0) {
-                //audio.play() 
+                this.playAudio();
                 clearInterval(this.myInterval)
               } else {
                 this.setState(({ minutes }) => ({

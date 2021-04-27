@@ -1,5 +1,15 @@
 import * as React from "react"
-import { Link, graphql } from "gatsby"
+import {  graphql } from "gatsby"
+
+// import { Typography } from "@material-ui/core";
+// //import { Link } from "gatsby"
+// import { Link } from "gatsby-theme-material-ui";
+import Container from '@material-ui/core/Container';
+import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box';
+import ProTip from '../components/ProTip';
+import { Link } from 'gatsby-theme-material-ui';
+import Copyright from '../components/Copyright';
 
 import Bio from "../components/bio"
 import Layout from "../components/layout"
